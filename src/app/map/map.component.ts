@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import { newArray } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -7,81 +8,66 @@ import * as L from 'leaflet';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit {
-  map : any;
+export class MapComponent implements OnInit {
+  map : L.map;
+  myMarker : L.marker;
+  popup = L.popup();
   
+
   tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		maxZoom: 30,
+		attribution: '',
 		id: 'mapbox/streets-v11',
 		tileSize: 512,
 		zoomOffset: -1
 	});
 
-  constructor() { }
+  poly : number[][];
+
+  constructor() {
+    this.poly = newArray(0);
+   }
+
+  ngOnInit(){
+
+  }
+   
 
   ngAfterViewInit(): void {
-    this.map = L.map('map').setView([35.70, 51.35], 13);
-    this.tiles.addTo(this.map);
-    this.map.on('click', this.onMapClick);
-  }
+    this.map = L.map('map').setView([35.69979085412715, 51.337995529174805], 17);
+    this.tiles.addTo(this.map);    
 
-  popup = L.popup();
+    this.map.on("click", e => {
+      
+      if (this.myMarker) { 
+        this.map.removeLayer(this.myMarker); 
+      }   
+      this.myMarker = new L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map); 
 
-	onMapClick(e) : void{
-    console.log(e);
-    L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map)
-		.bindPopup(e.latlng.toString()).openPopup();
+      this.addCircle(e.latlng.lat, e.latlng.lng)
 
-		/*this.popup
+      this.popup
 			.setLatLng(e.latlng)
 			.setContent("You clicked the map at " + e.latlng.toString())
-			.openOn(this.map);*/
-	}
-
-}
-
-/*
-var mymap = L.map('mapid').setView([35.70, 51.35], 13);
-
-	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/streets-v11',
-		tileSize: 512,
-		zoomOffset: -1
-	}).addTo(mymap);
-
-	
-	/*L.circle([51.508, -0.11], 500, {
-		color: 'red',
-		fillColor: '#f03',
-		fillOpacity: 0.5
-	}).addTo(mymap).bindPopup("I am a circle.");
-
-	L.polygon([
-		[51.509, -0.08],
-		[51.503, -0.06],
-		[51.51, -0.047]
-	]).addTo(mymap).bindPopup("I am a polygon.");
-
-var popup = L.popup();
-
-function onMapClick(e) {
+      .openOn(this.map);
+      
       debugger;
-  L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap)
-  .bindPopup(e.latlng.toString()).openPopup();
+      
+      this.poly.push([e.latlng.lat, e.latlng.lng]);
+      
+      
 
-  popup
-    .setLatLng(e.latlng)
-    .setContent("You clicked the map at " + e.latlng.toString())
-    .openOn(mymap);
+      //let polygons = L.polygon(this.poly, {color: 'red'}).addTo(this.map);
+      //this.map.fitBounds(polygons.getBounds());
+
+
+      var polyline = L.polyline(this.poly, {color: 'red'}).addTo(this.map);
+      this.map.fitBounds(polyline.getBounds());
+    });
+
+  }
+ 
+  addCircle(lat: number, lng : number){
+    L.circleMarker([lat , lng],{ radius: 20}).addTo(this.map);
+  }
 }
-
-mymap.on('click', onMapClick);
-*/
-
