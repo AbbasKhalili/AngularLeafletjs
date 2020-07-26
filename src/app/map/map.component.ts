@@ -34,6 +34,7 @@ export class MapComponent implements OnInit {
    
 
   ngAfterViewInit(): void {
+    
     this.map = L.map('map').setView([35.69979085412715, 51.337995529174805], 17);
     this.tiles.addTo(this.map);    
 
@@ -42,16 +43,30 @@ export class MapComponent implements OnInit {
       if (this.myMarker) { 
         this.map.removeLayer(this.myMarker); 
       }   
+
+      /*
+      let myIcon = L.icon({
+        iconUrl: 'my-icon.png',
+        iconSize: [38, 95],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+        shadowUrl: 'my-icon-shadow.png',
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94]
+      });
+      this.myMarker = new L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon}).addTo(this.map); 
+      */
+
       this.myMarker = new L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map); 
 
       this.addCircle(e.latlng.lat, e.latlng.lng)
 
       this.popup
-			.setLatLng(e.latlng)
-			.setContent("You clicked the map at " + e.latlng.toString())
-      .openOn(this.map);
+			    .setLatLng(e.latlng)
+			    .setContent("You clicked the map at " + e.latlng.toString())
+          .openOn(this.map);
       
-      debugger;
+      
       
       this.poly.push([e.latlng.lat, e.latlng.lng]);
       
