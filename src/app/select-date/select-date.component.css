@@ -1,0 +1,4 @@
+::ng-deep ng-persian-datepicker .datepicker-outer-container {
+    position: absolute;
+    z-index: 1000;
+  }
