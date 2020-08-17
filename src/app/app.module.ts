@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { SelectDateComponent } from './select-date/select-date.component';
 import { HasPermissionDirective } from './has-permission.directive';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     SelectDateComponent,
-    HasPermissionDirective
+    HasPermissionDirective,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
