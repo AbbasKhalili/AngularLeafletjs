@@ -1,6 +1,10 @@
 <a [routerLink]="['/map']" class="nav-link"><i class="icon-arrow-left5"></i>نقشه</a>
 <a [routerLink]="['/datepicker']" class="nav-link"><i class="icon-arrow-left5"></i>انتخاب تاریخ</a>
 
+<button routerLink="/customers">Customers</button>
+<button routerLink="/orders">Orders</button>
+<button routerLink="">Home</button>
+
 <p [appHasPermission]="'createorder1'">testing....</p>
 
 <router-outlet></router-outlet>

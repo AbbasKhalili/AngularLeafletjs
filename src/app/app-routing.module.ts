@@ -3,13 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { MapComponent } from './map/map.component';
 import { SelectDateComponent } from './select-date/select-date.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AppComponent } from './app.component';
+
 
 const routes: Routes = [
-  { path: '', component: AppComponent },
+  { path: '',  redirectTo: '',  pathMatch: 'full' },
   { path: 'map', component: MapComponent },
   { path: 'datepicker', component: SelectDateComponent },
-  { path: '**', component: PageNotFoundComponent }
+  //{ path: '**', component: PageNotFoundComponent },
+  { path: 'customers', loadChildren: () => import('./customers/customers.module').then(m => m.CustomersModule) },
+  { path: 'orders', loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule) },
 ];
 
 @NgModule({
